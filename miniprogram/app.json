@@ -1,25 +1,39 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/userConsole/userConsole",
-    "pages/storageConsole/storageConsole",
-    "pages/databaseGuide/databaseGuide",
-    "pages/addFunction/addFunction",
-    "pages/deployFunctions/deployFunctions",
-    "pages/chooseLib/chooseLib",
-    "pages/openapi/openapi",
-    "pages/openapi/serverapi/serverapi",
-    "pages/openapi/callback/callback",
-    "pages/openapi/cloudid/cloudid",
-    "pages/im/im",
-    "pages/im/room/room"
+    "pages/playlist/playlist",
+    "pages/blog/blog",
+    "pages/profile/profile",
+    "pages/musiclist/musiclist",
+    "pages/player/player"
   ],
+  "requiredBackgroundModes": ["audio", "location"],
+  "tabBar":{
+    "color":"#474747",
+    "selectedColor":"#d43c43",
+     "list":[{
+       "pagePath":"pages/playlist/playlist",
+       "text":"音乐",
+       "iconPath":"./image/music.png",
+       "selectedIconPath":"./image/music-actived.png"
+     },{
+      "pagePath":"pages/blog/blog",
+      "text":"博客",
+      "iconPath":"./image/blog.png",
+      "selectedIconPath":"./image/blog-actived.png"
+     },{
+      "pagePath":"pages/profile/profile",
+      "text":"我的",
+      "iconPath":"./image/profile.png",
+      "selectedIconPath":"./image/profile-actived.png"
+     }
+    ]
+  },
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "云开发 QuickStart",
-    "navigationBarTextStyle": "black"
+    "navigationBarBackgroundColor": "#d43c43",
+    "navigationBarTitleText": "云音乐",
+    "navigationBarTextStyle": "white"
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2"
