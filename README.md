@@ -7,6 +7,35 @@
 ##### 主要技术：
 * 使用组件化开发的思想，定义了歌单组件，歌曲组件和进度条组件
 * 使用tcb-router管理项目路由跳转部分,优化云函数的请求
+```
+const TcbRouter=require('tcb-router');
+// 云函数入口函数
+exports.main = async (event, context) => {
+ const app=new TcbRouter({event});
+ app.router("playlist",async(ctx,next)=>{  
+ //app.router的名字和$url的名字相对应
+   ctx.body=await cloud.database().collection('playlist')
+   .skip(event.start)
+   .limit(event.count)
+   .orderBy('createTime',"desc")
+   .get()
+   .then((res)=>{
+     return res;
+   })
+ }) 
+ 
+  wx.cloud.callFunction({
+      name:"music",
+      data:{
+        start:this.data.playlist.length,
+        count:MAX_LIMIT,
+        $url:'playlist'  //和app.router中定义的名字相对应
+      }
+    }).then((res)=>{
+      this.setData({
+       playlist:this.data.playlist.concat(res.result.data) //将获取成功的数据更新页面中data定义的数据
+      })
+```
 * 突破微信小程序只能读取100条的数据
 ```
 //分段异步获取数据
