@@ -68,8 +68,14 @@ const URL = 'http://musicapi.xiecheng.live/personalized';
     return JSON.parse(res).result;  //将获取到的字符串转化为对象，并取出对象下的result
   })
 ```
+#### 注意：有多个云环境ID时加上这行代码，确保环境一致
+```
+cloud.init({
+  env: cloud.DYNAMIC_CURRENT_ENV
+})
+
+```
 ##### 效果图：
-![image](https://github.com/jessalin737/xiaochengxu-Smart-classroom/blob/master/classroom-1.png)
 ![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/微信图片_20200714152125.png)
 ![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/微信图片_20200714152132.png)
 ![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/微信图片_20200714152137.png)
