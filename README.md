@@ -79,8 +79,7 @@ cloud.init({
 ![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/微信图片_20200714152125.png)
 ![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/微信图片_20200714152132.png)
 ![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/微信图片_20200714152137.png)
-#### 2.博客模块的开发（开发中）
-#### 3.个人中心模块的开发（开发中）
+#### 2.个人中心模块的开发（开发中）
 
 
 ## 参考文档
