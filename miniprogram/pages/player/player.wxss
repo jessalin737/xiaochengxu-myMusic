@@ -36,6 +36,7 @@
   margin-top: -184rpx;
   margin-left: -184rpx;
 }
+/* 上面顶针的样式，一开始旋转-20deg */
 .player-disc::after {
   content: '';
   width: 192rpx;
@@ -48,6 +49,7 @@
   transform-origin: 24rpx 10rpx;
   transition: transform 0.5s ease;
 }
+/* 正在播放时旋转0deg */
 .play.player-disc::after{
  transform: rotate(0deg);
 }

@@ -13,6 +13,23 @@ App({
         traceUser: true,
       })
     }
-    this.globalData = {}
+    //定义为全局变量
+    this.globalData = {
+      openid:-1
+    },
+    this.getOpenid();
+    // console.log(this.getOpenid);
+  },  
+  getOpenid(){
+    wx.cloud.callFunction({
+      name: 'login'
+    }).then((res) => {
+      const openid = res.result.openid
+      // console.log(openid);
+      this.globalData.openid = openid
+      if (wx.getStorageSync(openid) == '') {
+        wx.setStorageSync(openid, [])
+      }
+    })
   }
 })

@@ -1,0 +1,2 @@
+<!--components/lyric/lyric.wxml-->
+<scroll-view  hidden="{{lyricShow}}">歌词</scroll-view>

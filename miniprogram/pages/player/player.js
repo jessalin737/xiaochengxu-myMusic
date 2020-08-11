@@ -1,6 +1,7 @@
 // pages/player/player.js
 let musiclist=[];
 let nowPlayingIndex=0;
+let app=getApp();
 //调用小程序全局唯一的背景音频播放器
 const backgroundAudioManager = wx.getBackgroundAudioManager()
 Page({
@@ -9,14 +10,15 @@ Page({
    */
   data: {
     picUrl:'',
-    isPlaying:false
+    isPlaying:false,
+    lyricShow:false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options);
+    // console.log(options);
     nowPlayingIndex=options.index;
     musiclist=wx.getStorageSync('musiclist');
     this._loadMusicDetail(options.musicId);
@@ -24,7 +26,7 @@ Page({
   _loadMusicDetail(musicId){
     backgroundAudioManager.pause();
     let music=musiclist[nowPlayingIndex];
-    console.log(music);
+    // console.log(music);
     wx.setNavigationBarTitle({
       title: music.name,
     })
@@ -41,7 +43,7 @@ Page({
       wx.showLoading({
         title: '正在加载中',
       })
-      console.log(res);
+      // console.log(res);
       console.log(JSON.parse(res.result));
       let result=JSON.parse(res.result);
       backgroundAudioManager.src=result.data[0].url;
@@ -49,12 +51,25 @@ Page({
       backgroundAudioManager.singer=music.ar[0].name;
       backgroundAudioManager.epname=music.al.name;
       backgroundAudioManager.coverImgUrl=music.al.picUrl;
+      
       this.setData({
         isPlaying:true
       })
       wx.hideLoading();
+      //播放完成后加载歌词
+      wx.cloud.callFunction({
+        name:'music',
+        data:{
+          musicId,
+          $url:'lyric'
+        }
+      }).then((res)=>{
+        console.log(res);
+      })
     })
+    this.saveHistory();
   },
+  //中间暂停按钮的切换
   switchPlaying(){
    if(this.data.isPlaying){
      backgroundAudioManager.pause();
@@ -65,6 +80,7 @@ Page({
      isPlaying:!this.data.isPlaying
    })
   },
+  //上一首
   toPrev(){
      nowPlayingIndex--;
     if(nowPlayingIndex<0){
@@ -72,12 +88,40 @@ Page({
     }
     this._loadMusicDetail(musiclist[nowPlayingIndex].id);
   },
+  //下一首
   toNext(){
     nowPlayingIndex++;
     if(nowPlayingIndex>musiclist.length-1){
       nowPlayingIndex=0;
     }
     this._loadMusicDetail(musiclist[nowPlayingIndex].id);
+  },
+  switchShow(){
+    this.setData({
+      lyricShow:!this.data. lyricShow
+    })
+  },
+  //保存播放历史：判断当前正在播放的是否在本地已存储，则退出；否则存入本地
+  saveHistory(){
+    //获取当前正在播放的歌曲
+    let music=musiclist[nowPlayingIndex];
+    let openid=app.globalData.openid;
+    console.log(openid);
+    let history=wx.getStorageSync(openid);
+    let isHave=false;
+    for(let i=0,len=history.length;i<len;i++){
+      if(history[i].id==music.id){
+        isHave=true;
+        break;
+      }
+    }
+    if(!isHave){
+      history.unshift(music);
+     wx.setStorage({
+       key:openid,
+       data:history
+     })
+    }
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

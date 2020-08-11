@@ -15,7 +15,7 @@
   bottom: -14rpx;
   left: 0;
 }
-
+/* 滑动圆点 */
 .movable-view {
   width: 36rpx;
   height: 36rpx;

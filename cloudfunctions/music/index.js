@@ -10,7 +10,7 @@ cloud.init({
 
 // 云函数入口函数
 exports.main = async (event, context) => {
- const app=new TcbRouter({event});
+ const app=new TcbRouter({event}); 
  app.router("playlist",async(ctx,next)=>{
    ctx.body=await cloud.database().collection('playlist')
    .skip(event.start)
@@ -32,5 +32,11 @@ exports.main = async (event, context) => {
      return res;
     })
  })
+//  加载歌词
+app.router('lyric', async(ctx, next) => {
+  ctx.body = await rp(BASE_URL + `/lyric?id=${event.musicId}`).then((res) => {
+    return res
+  })
+})
  return app.serve();
 }
