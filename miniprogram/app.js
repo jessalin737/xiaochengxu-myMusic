@@ -15,11 +15,18 @@ App({
     }
     //定义为全局变量
     this.globalData = {
+      playingMusicId:-1,
       openid:-1
     },
     this.getOpenid();
     // console.log(this.getOpenid);
   },  
+    setPlayMusicId(musicId){
+      this.globalData.playingMusicId=musicId;
+    },
+    getPlayMusicId(){
+      return this.globalData.playingMusicId
+    },
   getOpenid(){
     wx.cloud.callFunction({
       name: 'login'

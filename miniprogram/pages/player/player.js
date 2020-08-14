@@ -11,7 +11,9 @@ Page({
   data: {
     picUrl:'',
     isPlaying:false,
-    lyricShow:false
+    lyricShow:false,
+    lyric:String,
+    isSame:false //是否为同一首歌曲
   },
 
   /**
@@ -24,7 +26,19 @@ Page({
     this._loadMusicDetail(options.musicId);
   },
   _loadMusicDetail(musicId){
-    backgroundAudioManager.pause();
+    if(musicId==app.getPlayMusicId()){
+      this.setData({
+        isSame:true
+      })
+    }else{
+      this.setData({
+        isSame:false
+      })
+    }
+    //不是同一首歌曲就停下
+    if(!this.data.isSame){
+      backgroundAudioManager.pause();
+    }
     let music=musiclist[nowPlayingIndex];
     // console.log(music);
     wx.setNavigationBarTitle({
@@ -33,6 +47,9 @@ Page({
     this.setData({
       picUrl:music.al.picUrl
     })
+    console.log(musicId,typeof musicId);
+    //在音乐加载之前将musicId设置为全局变量
+    app.setPlayMusicId(musicId);
     wx.cloud.callFunction({
       name:'music',
       data:{
@@ -43,14 +60,22 @@ Page({
       wx.showLoading({
         title: '正在加载中',
       })
-      // console.log(res);
-      console.log(JSON.parse(res.result));
-      let result=JSON.parse(res.result);
-      backgroundAudioManager.src=result.data[0].url;
-      backgroundAudioManager.title=music.name;
-      backgroundAudioManager.singer=music.ar[0].name;
-      backgroundAudioManager.epname=music.al.name;
-      backgroundAudioManager.coverImgUrl=music.al.picUrl;
+      // console.log(JSON.parse(res.result));
+      let result=res.result;
+      //当前歌曲为VIP用户才有权限播放时
+      if(result.data[0].url==null){
+        wx.showToast({
+          title: '无权限播放',
+        })
+        return;
+      }
+      if(!this.data.isSame){
+        backgroundAudioManager.src=result.data[0].url;
+        backgroundAudioManager.title=music.name;
+        backgroundAudioManager.singer=music.ar[0].name;
+        backgroundAudioManager.epname=music.al.name;
+        backgroundAudioManager.coverImgUrl=music.al.picUrl;
+      } 
       
       this.setData({
         isPlaying:true
@@ -58,13 +83,21 @@ Page({
       wx.hideLoading();
       //播放完成后加载歌词
       wx.cloud.callFunction({
-        name:'music',
-        data:{
+        name: 'music',
+        data: {
           musicId,
-          $url:'lyric'
+          $url: 'lyric',
         }
-      }).then((res)=>{
-        console.log(res);
+      }).then((res) => {
+        // console.log(res)
+        let lyric = '暂无歌词'
+        const lrc = res.result.lrc
+        if (lrc) {
+          lyric = lrc.lyric
+        }
+        this.setData({
+          lyric
+        })
       })
     })
     this.saveHistory();
@@ -98,7 +131,20 @@ Page({
   },
   switchShow(){
     this.setData({
-      lyricShow:!this.data. lyricShow
+      lyricShow:!this.data.lyricShow
+    })
+  },
+  timeUpdate(event){
+    this.selectComponent('.lyric').update(event.detail.currentTime)
+  },
+  onPlay(){
+    this.setData({
+      isPlaying:true
+    })
+  },
+  onPause(){
+    this.setData({
+      isPlaying:false
     })
   },
   //保存播放历史：判断当前正在播放的是否在本地已存储，则退出；否则存入本地

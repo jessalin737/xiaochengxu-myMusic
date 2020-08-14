@@ -14,7 +14,7 @@ Component({
    * 组件的属性列表
    */
   properties: {
-
+    isSame:Boolean
   },
 
   /**
@@ -31,6 +31,9 @@ Component({
   //组件的生命周期
   lifetimes:{
     ready(){
+      if (this.properties.isSame && this.data.showtime.totalTime == '00:00') {
+        this._setTime()
+      }
       this._getmovableDis(),
       this._bindBGMEvent()
     },
@@ -83,6 +86,7 @@ Component({
       backgroundAudioManager.onPlay(()=>{  
         console.log('onPlay');
         isMoving=false;
+        this.triggerEvent('musicPlay');
       })
       //停止
       backgroundAudioManager.onStop(()=>{
@@ -91,6 +95,7 @@ Component({
       //暂停
       backgroundAudioManager.onPause(()=>{
         console.log('onPause');
+        this.triggerEvent('musicPause');
       })
       //拖动进度条，音频未加载的时候触发
       backgroundAudioManager.onWaiting(()=>{
@@ -125,7 +130,8 @@ Component({
                 progress:currentTime/duration*100,
                 ['showtime.currentTime']:`${currentTimeFmt.min}:${currentTimeFmt.sec}`
               })
-              curSecond=sec;
+              curSecond=sec; 
+              this.triggerEvent('timeUpdate',{currentTime});
             }
           }
          
@@ -146,8 +152,9 @@ Component({
         })
       })
     },
+    //设置总时长
     _setTime(){
-     const duration=backgroundAudioManager.duration;
+      const duration=backgroundAudioManager.duration;
       const durationFmt=this._dateFormat(duration);
       this.setData({
         ['showtime.totalTime']:`${durationFmt.min}:${durationFmt.sec}`

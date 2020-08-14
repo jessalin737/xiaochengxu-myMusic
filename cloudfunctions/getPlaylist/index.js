@@ -7,10 +7,10 @@ cloud.init({
 
 const db = cloud.database()
 
-const rp = require('request-promise');
+// const rp = require('request-promise');
+const axios=require('axios');
 
-const URL = 'http://musicapi.xiecheng.live/personalized';
-
+const URL='https://apis.imooc.com/personalized?icode=A0CD56251BD9C237'
 const playlistCollection = db.collection('playlist');
 
 const MAX_LIMIT = 100;
@@ -40,9 +40,18 @@ exports.main = async(event, context) => {
     })
   }
 
-  const playlist = await rp(URL).then((res) => {
-    return JSON.parse(res).result;
-  })
+  // const playlist = await rp(URL).then((res) => {
+  //   return JSON.parse(res).result;
+  // })
+  const {data}=await axios.get(URL);
+  if(data.code>=1000){
+    console.log(data.msg);
+    return 0;
+  }
+  const playlist=data.result;
+  console.log(playlist);
+  
+
   const newData = [];
   for (let i = 0; i <playlist.length; i++) {
     let flag = true;
@@ -56,18 +65,14 @@ exports.main = async(event, context) => {
       newData.push(playlist[i])
     }
   }
-
-  for (let i = 0; i < newData.length; i++) {
+  if(playlist.length>0){
     await playlistCollection.add({
-      data: {
-        ...newData[i],
-        createTime: db.serverDate(),
-      }
+      data: [...playlist]
     }).then((res) => {
       console.log('插入成功')
     }).catch((err) => {
       console.error('插入失败')
     })
-  }
   return newData.length;
  }
+}

@@ -8,12 +8,13 @@
 	<view class="player-disc {{isPlaying?'play': ''}}" bindtap="switchShow" hidden="{{lyricShow}}">
 		<image class="player-img rotation {{isPlaying?'':'rotation-paused'}} " src="{{picUrl}}"></image>
 	</view>
-</view>	
+
   <!-- 歌词组件 -->
-	<x-lyric lyricShow="{{!lyricShow}}" bindtap="switchShow"></x-lyric>
+	<x-lyric class="lyric" lyricShow="{{!lyricShow}}" bindtap="switchShow"  lyric="{{lyric}}"></x-lyric>
+
 	<!-- 进度条组件 -->
 	<view class="progress-bar">
-		<x-progressBar bind:musicEnd="toNext"></x-progressBar>
+		<x-progressBar bind:musicEnd="toNext" bind:timeUpdate="timeUpdate" bind:musicPlay="onPlay" bind:musicPause="onPause" isSame="{{isSame}}"></x-progressBar>
 	</view>
    <!-- 控制切换图标 -->
 	<view class="control">
@@ -21,3 +22,4 @@
 		<text class="iconfont {{isPlaying?'icon-stop':'icon-bofang'}}"  bindtap="switchPlaying"></text>
 		<text class="iconfont icon-xiayishou" bindtap="toNext"></text>
 	</view>
+	</view>	
