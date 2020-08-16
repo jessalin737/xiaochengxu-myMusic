@@ -78,17 +78,13 @@ cloud.init({
 
 ```
 ##### 效果图：
-![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/1.png)![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/2.png)
-![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/3.png)
-![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/3%20(2).png)
-![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/4.png)
-![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/5.png)
-![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/6.png)
-![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/7.png)
+![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/1.png)![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/2.png)![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/3.png)![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/3%20(2).png)
+
+
+![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/4.png)![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/5.png)![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/6.png)![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/7.png)
+
 #### 2.个人中心模块的开发
 * 最近播放历史记录
-* 生成小程序码
-
-
+* 生成小程序码(暂未上线，所以扫不了码)
 ## 参考文档
 - [云开发文档](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/getting-started.html)
