@@ -69,7 +69,7 @@ app.router('musiclist',async(ctx,next)=>{
  })
 ```
 
-```
+
 #### 注意：有多个云环境ID时加上这行代码，确保环境一致
 ```
 cloud.init({
