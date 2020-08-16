@@ -2,10 +2,11 @@
 ### 整体项目设计实现的功能：
 #### 1.音乐模块的开发
 * 首页轮播图效果+歌单模块
-* 点击歌单可以自动跳转到歌曲界面
+* 点击歌单可以自动跳转到歌曲列表界面
 * 点击歌曲可以进入到播放音乐的动态效果界面
+* 点击播放音乐的界面可以跳转到歌词界面
 ##### 主要技术：
-* 使用组件化开发的思想，定义了歌单组件，歌曲组件和进度条组件
+* 使用组件化开发的思想，定义了歌单组件，歌曲组件、进度条组件
 * 使用tcb-router管理项目路由跳转部分,优化云函数的请求
 ```
 const TcbRouter=require('tcb-router');
@@ -60,13 +61,14 @@ const countResult = await playlistCollection.count();
     })
   }
 ```
-* 使用request-promise请求接口数据  
+* 使用axios请求接口数据  
 ```
-const rp = require('request-promise'); 
-const URL = 'http://musicapi.xiecheng.live/personalized';
-  const playlist = await rp(URL).then((res) => {
-    return JSON.parse(res).result;  //将获取到的字符串转化为对象，并取出对象下的result
-  })
+app.router('musiclist',async(ctx,next)=>{
+  const res=await axios.get(`${BASE_URL}/playlist/detail?id=${parseInt(event.playlistId)}&${ICODE}`);
+  ctx.body=res.data;
+ })
+```
+
 ```
 #### 注意：有多个云环境ID时加上这行代码，确保环境一致
 ```
@@ -76,13 +78,12 @@ cloud.init({
 
 ```
 ##### 效果图：
-![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/微信图片_20200714152125.png)
-![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/微信图片_20200714152132.png)
-![image](https://github.com/jessalin737/xiaochengxu-myMusic/blob/master/微信图片_20200714152137.png)
-#### 2.个人中心模块的开发（开发中）
+
+
+#### 2.个人中心模块的开发
+* 最近播放历史记录
+* 生成小程序码
 
 
 ## 参考文档
-
 - [云开发文档](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/getting-started.html)
-
