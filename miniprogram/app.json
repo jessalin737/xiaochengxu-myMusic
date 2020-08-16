@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/playlist/playlist",
-    "pages/blog/blog",
     "pages/profile/profile",
     "pages/musiclist/musiclist",
     "pages/player/player",
@@ -20,12 +19,6 @@
         "text": "音乐",
         "iconPath": "./image/music.png",
         "selectedIconPath": "./image/music-actived.png"
-      },
-      {
-        "pagePath": "pages/blog/blog",
-        "text": "博客",
-        "iconPath": "./image/blog.png",
-        "selectedIconPath": "./image/blog-actived.png"
       },
       {
         "pagePath": "pages/profile/profile",

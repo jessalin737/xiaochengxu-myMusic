@@ -1,30 +1,33 @@
 // miniprogram/pages/playlist/playlist.js
 const MAX_LIMIT=15;
+const db=wx.cloud.database();
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    swiperImgUrls: [
-        {
-        url: 'http://p1.music.126.net/oeH9rlBAj3UNkhOmfog8Hw==/109951164169407335.jpg',
-      },
-        {
-          url: 'http://p1.music.126.net/xhWAaHI-SIYP8ZMzL9NOqg==/109951164167032995.jpg',
-        },
-        {
-          url: 'http://p1.music.126.net/Yo-FjrJTQ9clkDkuUCTtUg==/109951164169441928.jpg',
-        }
-        ],
+    swiperImgUrls: [],
+      //   {
+      //   url: 'http://p1.music.126.net/oeH9rlBAj3UNkhOmfog8Hw==/109951164169407335.jpg',
+      // },
+      //   {
+      //     url: 'http://p1.music.126.net/xhWAaHI-SIYP8ZMzL9NOqg==/109951164167032995.jpg',
+      //   },
+      //   {
+      //     url: 'http://p1.music.126.net/Yo-FjrJTQ9clkDkuUCTtUg==/109951164169441928.jpg',
+      //   }
+       
     playlist:[]
     
   },
+
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     this._getPlaylist();
+    this._getSwiper();
   },
 
   /**
@@ -63,6 +66,7 @@ Page({
       playlist:[]
     })
     this._getPlaylist();
+    this._getSwiper();
   },
 
 
@@ -96,6 +100,13 @@ Page({
       })
       wx.stopPullDownRefresh()
       wx.hideLoading()
+    })
+  },
+  _getSwiper(){
+    db.collection('swiper').get().then((res)=>{
+      this.setData({
+        swiperImgUrls:res.data
+      })
     })
   }
 })
